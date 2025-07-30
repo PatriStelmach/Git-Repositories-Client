@@ -1,8 +1,6 @@
 package com.example.demo.Config;
 
 import feign.codec.ErrorDecoder;
-import org.modelmapper.Conditions;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,12 +13,10 @@ public class Configuration
         return new ClientErrorDecoder();
     }
 
-
     @Bean
     public RestTemplate restTemplate()
     {
         return new RestTemplate();
     }
-
 }
 

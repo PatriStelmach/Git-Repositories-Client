@@ -4,7 +4,6 @@ import com.example.demo.Errors.UserNotFoundException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 
-
 public class ClientErrorDecoder implements ErrorDecoder
 {
     //custom error when retrieving 404 user not found from GitHub API

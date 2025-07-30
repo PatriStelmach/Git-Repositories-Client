@@ -11,19 +11,16 @@ Features
 Technologies Used
 -----------------
 - Java 21
-- Spring Boot 3.4.4
+- Spring Boot 3.5.4
 - OpenFeign (for GitHub API communication)
-- JUnit 5 (unit and integration testing)
+- JUnit 5 Jupiter API  (integration testing)
 - Maven
 
 Prerequisites
 -------------
 - Java 21 installed
 - Maven installed
- 
 
-
-  
 Running the Application
 -----------------------
 You can run the application in two ways:
@@ -33,8 +30,8 @@ You can run the application in two ways:
 2. Compile the code by yourself
 
 
-Building a JAR
---------------
+Building a JAR file
+-------------------
 To package the project as a JAR:
 
     mvn clean package
@@ -81,7 +78,7 @@ Response:
 
 Errors:
 - 404 Not Found – If the user does not exist or has no public repositories.
-- 500 for exceeding GitHub api responses limit 
+- 403 / 500 for exceeding GitHub api responses limit 
 
 
 Notes

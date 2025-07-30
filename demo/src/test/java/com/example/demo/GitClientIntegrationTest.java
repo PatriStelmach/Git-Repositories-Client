@@ -2,27 +2,19 @@ package com.example.demo;
 
 
 import com.example.demo.Clients.GitClient;
-import com.example.demo.Controllers.GitController;
-import com.example.demo.Models.Branch;
 import com.example.demo.Models.GitRepo;
 import com.example.demo.Models.GitRepoDTO;
 import com.example.demo.Services.GitService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.mockwebserver.MockResponse;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +35,7 @@ public class GitClientIntegrationTest
     private int port;
 
 
-    //tests if endpoint works for default "octocat" user
+    //checks if expected output given form client matches the controller output
     @Test
     public void testGetReposFromGitHub() throws Exception
     {
@@ -51,28 +43,25 @@ public class GitClientIntegrationTest
         String username = "octocat";
         // when
         List<GitRepo> clientRepos = gitClient.getRepos(username);
-        List<Branch> branches = gitClient.getBranches(username, "hello-world");
+
+        List<GitRepoDTO> expectedRepos = clientRepos.stream()
+                .filter(repo -> !repo.isFork())
+                .map(repo ->
+                {
+                    repo.setBranches(gitClient.getBranches(username, repo.getName()));
+                    return new GitRepoDTO(repo.getName(), repo.getOwner(), repo.getBranches());
+                })
+                .toList();
 
         ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:" + port + "/github/getRepos/"
                 + username, String.class);
-        List<GitRepoDTO> controllerRepos = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+        List<GitRepoDTO> actualRepos = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
 
-
-        List<GitRepoDTO> allRepos = clientRepos.stream()
-                .map(repo -> GitRepoDTO())
-        long allReposCount = clientRepos.size();
-        long forkReposCount = clientRepos.stream()
-                .filter(GitRepo::isFork)
-                .count();
-        long noForkReposCount = controllerRepos.size();
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(controllerRepos, gitService.getAllRepos(username));
-        assertEquals(noForkReposCount, allReposCount - forkReposCount);
-        assertNotNull(clientRepos, "List of repos can't be null");
-        assertNotNull(controllerRepos, "List of repos can't be null");
-        assertNotNull(branches, "List of branches can't be null");
+        assertEquals(expectedRepos, gitService.getAllRepos(username));
+        assertEquals(expectedRepos, actualRepos);
 
     }
 
