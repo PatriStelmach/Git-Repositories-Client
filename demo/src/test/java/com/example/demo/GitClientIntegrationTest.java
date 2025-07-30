@@ -57,9 +57,19 @@ public class GitClientIntegrationTest
                 + username, String.class);
         List<GitRepoDTO> controllerRepos = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
 
+
+        List<GitRepoDTO> allRepos = clientRepos.stream()
+                .map(repo -> GitRepoDTO())
+        long allReposCount = clientRepos.size();
+        long forkReposCount = clientRepos.stream()
+                .filter(GitRepo::isFork)
+                .count();
+        long noForkReposCount = controllerRepos.size();
+
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(controllerRepos, gitService.getAllRepos(username));
+        assertEquals(noForkReposCount, allReposCount - forkReposCount);
         assertNotNull(clientRepos, "List of repos can't be null");
         assertNotNull(controllerRepos, "List of repos can't be null");
         assertNotNull(branches, "List of branches can't be null");

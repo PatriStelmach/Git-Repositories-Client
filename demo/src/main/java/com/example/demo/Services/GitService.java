@@ -1,8 +1,6 @@
 package com.example.demo.Services;
 
 import com.example.demo.Clients.GitClient;
-import com.example.demo.Config.Mapper;
-import com.example.demo.Models.Branch;
 import com.example.demo.Models.GitRepo;
 
 import com.example.demo.Models.GitRepoDTO;

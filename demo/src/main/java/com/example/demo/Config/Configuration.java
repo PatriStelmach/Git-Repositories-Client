@@ -15,13 +15,6 @@ public class Configuration
         return new ClientErrorDecoder();
     }
 
-    @Bean
-    public ModelMapper modelMapper()
-    {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-        return modelMapper;
-    }
 
     @Bean
     public RestTemplate restTemplate()
