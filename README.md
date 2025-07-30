@@ -13,21 +13,12 @@ Technologies Used
 - Java 21
 - Spring Boot 3.5.4
 - OpenFeign (for GitHub API communication)
-- JUnit 5 Jupiter API  (integration testing)
 - Maven
 
 Prerequisites
 -------------
 - Java 21 installed
 - Maven installed
-
-Running the Application
------------------------
-You can run the application in two ways:
-
-1. Downloading Jar file present in "demo" folder
-   - to run your jar file type: java -jar demo-GitHub-Client-API.jar in jar direcotry.
-2. Compile the code by yourself
 
 
 Building a JAR file
@@ -41,6 +32,15 @@ To package the project as a JAR:
 The JAR will be available in the target/ directory:
 
     java -jar target/Git-Repositories-Client-0.0.1-SNAPSHOT.jar
+
+
+Running the Application
+-----------------------
+You can run the application in two ways:
+
+1. Running your pre-built JAR file
+   - to run your jar file type: java -jar demo-Git-Repositories-Client.jar in jar direcotry.
+2. Compile the code by yourself
 
 
 Running Tests
@@ -85,7 +85,7 @@ Notes
 -----
 - This project is intended as a recruitment assignment.
 - Only public repositories and branches are fetched – no authentication for private resources is performed.
-- You can change the port of localhost in 'application.properties' file, the default one is 8090.
+- You can change the port of which the app is running in 'application.properties' file, the default one is 8090.
 
 License
 -------
